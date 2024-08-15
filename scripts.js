@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (this.value === 'monthly') {
             document.getElementById('inflationRate').value = defaultMonthlyInflation.toFixed(2);
         }
+        calculate(); // Trigger calculation when inflation type changes
     });
+
+    // Listen for changes in inflation rate
+    document.getElementById('inflationRate').addEventListener('input', calculate);
 
     document.getElementById('calcForm').addEventListener('input', handleInput);
 });
@@ -34,7 +38,7 @@ function handleInput(event) {
         installmentAmountInput.value = (totalInstallmentAmount / numInstallments).toFixed(2);
     }
 
-    calculate();
+    calculate(); // Trigger calculation on other input changes
 }
 
 function calculate() {
@@ -58,8 +62,8 @@ function calculate() {
 
     const resultDiv = document.getElementById('result');
     if (adjustedTotal < cashPrice) {
-        resultDiv.innerHTML = `Taksit daha avantajlı! <br>Taksitli Gerçek Maliyet: ₺${adjustedTotal.toFixed(2)}.<br> Peşin Maliyet: ₺${cashPrice.toFixed(2)}.`;
+        resultDiv.innerHTML = `Taksit daha avantajlı! Toplam Gerçek Maliyet: ₺${adjustedTotal.toFixed(2)}.<br> Peşin Fiyatı: ₺${cashPrice.toFixed(2)}.`;
     } else {
-        resultDiv.innerHTML = `Peşin ödeme daha avantajlı! <br>Taksitli Gerçek Maliyet: ₺${adjustedTotal.toFixed(2)}.<br> Peşin Maliyet: ₺${cashPrice.toFixed(2)}.`;
+        resultDiv.innerHTML = `Peşin ödeme daha avantajlı! Toplam Gerçek Maliyet: ₺${adjustedTotal.toFixed(2)}.<br> Peşin Fiyatı: ₺${cashPrice.toFixed(2)}.`;
     }
 }

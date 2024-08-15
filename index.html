@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taksit mi Peşin mi Hesaplayıcı</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>Taksit mi Peşin mi Hesaplayıcı</h1>
+    <form id="calcForm">
+        <label for="cashPrice">Peşin Fiyatı (₺):</label>
+        <input type="number" id="cashPrice" required>
+
+        <label for="numInstallments">Taksit Sayısı:</label>
+        <input type="number" id="numInstallments" required>
+
+        <label for="installmentAmount">Taksit Tutarı (₺):</label>
+        <input type="number" id="installmentAmount">
+
+        <label for="totalInstallmentAmount">Toplam Taksit Tutarı (₺):</label>
+        <input type="number" id="totalInstallmentAmount">
+
+        <label for="inflationRate">Enflasyon Oranı (%):</label>
+        <select id="inflationType">
+            <option value="monthly">Aylık</option>
+            <option value="yearly">Yıllık</option>
+        </select>
+        <input type="number" id="inflationRate" required>
+    </form>
+    <div id="result"></div>
+</div>
+<script src="scripts.js"></script>
+</body>
+</html>

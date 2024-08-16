@@ -9,16 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Listen for changes in inflation type
     document.getElementById('inflationType').addEventListener('change', function () {
-        if (this.value === 'yearly') {
-            document.getElementById('inflationRate').value = defaultYearlyInflation;
-        } else if (this.value === 'monthly') {
-            document.getElementById('inflationRate').value = defaultMonthlyInflation.toFixed(2);
-        }
         calculate(); // Trigger calculation when inflation type changes
     });
 
     // Listen for changes in inflation rate
     document.getElementById('inflationRate').addEventListener('input', calculate);
+    document.getElementById('numInstallments').addEventListener('input', calculate);
 
     document.getElementById('calcForm').addEventListener('input', handleInput);
 });
@@ -33,6 +29,11 @@ function handleInput(event) {
         totalInstallmentAmountInput.value = (installmentAmount * numInstallments).toFixed(2);
     }
 
+    if (event.target.id === 'numInstallments') {
+        const installmentAmount = parseFloat(installmentAmountInput.value) || 0;
+        totalInstallmentAmountInput.value = (installmentAmount * numInstallments).toFixed(2);
+    }
+
     if (event.target.id === 'totalInstallmentAmount' && numInstallments) {
         const totalInstallmentAmount = parseFloat(totalInstallmentAmountInput.value) || 0;
         installmentAmountInput.value = (totalInstallmentAmount / numInstallments).toFixed(2);
@@ -43,27 +44,32 @@ function handleInput(event) {
 
 function calculate() {
     const cashPrice = parseFloat(document.getElementById('cashPrice').value) || 0;
-    const numInstallments = parseInt(document.getElementById('numInstallments').value) || 0;
+    const numInstallments = parseFloat(document.getElementById('numInstallments').value) || 0;
     const installmentAmount = parseFloat(document.getElementById('installmentAmount').value) || 0;
-    const inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100 || 0;
+    let monthlyInflationRate = parseFloat(document.getElementById('inflationRate').value) / 100 || 0;
     const inflationType = document.getElementById('inflationType').value;
+
+    if (inflationType === 'yearly') {
+        monthlyInflationRate = Math.pow(1.0 + monthlyInflationRate, 1/12);
+    } else  {
+        monthlyInflationRate = 1.0 + monthlyInflationRate;
+    }
+
 
     let adjustedTotal = 0;
 
+    let inflationAdjustment = 1;
     for (let i = 0; i < numInstallments; i++) {
-        let inflationAdjustment = 1;
-        if (inflationType === 'monthly') {
-            inflationAdjustment = Math.pow(1 + inflationRate, i / 12);
-        } else if (inflationType === 'yearly') {
-            inflationAdjustment = Math.pow(1 + inflationRate, i);
-        }
+        inflationAdjustment *= monthlyInflationRate;
         adjustedTotal += installmentAmount / inflationAdjustment;
     }
 
+    adjustedTotal = installmentAmount * (1 - 1 / (Math.pow(monthlyInflationRate, numInstallments))) / (monthlyInflationRate - 1);
+
     const resultDiv = document.getElementById('result');
     if (adjustedTotal < cashPrice) {
-        resultDiv.innerHTML = `Taksit daha avantajlı! Toplam Gerçek Maliyet: ₺${adjustedTotal.toFixed(2)}.<br> Peşin Fiyatı: ₺${cashPrice.toFixed(2)}.`;
+        resultDiv.innerHTML = `Taksit daha avantajlı! <br>Toplam Gerçek Maliyet: ₺${adjustedTotal.toFixed(2)}.<br> Peşin Fiyatı: ₺${cashPrice.toFixed(2)}.`;
     } else {
-        resultDiv.innerHTML = `Peşin ödeme daha avantajlı! Toplam Gerçek Maliyet: ₺${adjustedTotal.toFixed(2)}.<br> Peşin Fiyatı: ₺${cashPrice.toFixed(2)}.`;
+        resultDiv.innerHTML = `Peşin ödeme daha avantajlı! <br>Toplam Gerçek Maliyet: ₺${adjustedTotal.toFixed(2)}.<br> Peşin Fiyatı: ₺${cashPrice.toFixed(2)}.`;
     }
 }

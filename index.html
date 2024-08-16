@@ -13,7 +13,17 @@
         <label for="cashPrice">Peşin Fiyatı (₺):</label>
         <input type="number" id="cashPrice" required>
 
-        <label for="numInstallments">Taksit Sayısı:</label>
+        <label for="numInstallments">Taksit Sayısı:
+            <div class="tooltip-container">
+                <span class="info-icon">i</span>
+                <div class="tooltip">
+                    Ödemeye tam 1 ay sonra başlayacağınız varsayılmıştır, daha önceyse 0-1 arası bir değer
+                    girebilisiniz.
+                </div>
+            </div>
+        </label>
+
+
         <input type="number" id="numInstallments" required>
 
         <label for="installmentAmount">Taksit Tutarı (₺):</label>
@@ -27,7 +37,7 @@
             <option value="monthly">Aylık</option>
             <option value="yearly">Yıllık</option>
         </select>
-        <input type="number" id="inflationRate" required>
+        <input type="number" id="inflationRate" value="61.78" required>
     </form>
     <div id="result"></div>
 </div>

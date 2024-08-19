@@ -67,9 +67,13 @@ function calculate() {
     adjustedTotal = installmentAmount * (1 - 1 / (Math.pow(monthlyInflationRate, numInstallments))) / (monthlyInflationRate - 1);
 
     const resultDiv = document.getElementById('result');
+    let pesinReelMaliyet = `Peşin Reel Maliyet: ₺${cashPrice.toFixed(2)}`;
+    let taksitliReelMaliyet = `Taksitli Reel Maliyet: ₺${adjustedTotal.toFixed(2)}`;
+    let fark = cashPrice - adjustedTotal;
+    let farkHtml = `Peşin - Taksitli Reel Farkı: <span style="color: ${fark > 0 ?'green' : 'red'}">₺${fark.toFixed(2)}`;
     if (adjustedTotal < cashPrice) {
-        resultDiv.innerHTML = `Taksit daha avantajlı! <br>Toplam Gerçek Maliyet: ₺${adjustedTotal.toFixed(2)}.<br> Peşin Fiyatı: ₺${cashPrice.toFixed(2)}.`;
+        resultDiv.innerHTML = `Taksit daha avantajlı! <br>${taksitliReelMaliyet}.<br> ${pesinReelMaliyet} <br> ${farkHtml}.`;
     } else {
-        resultDiv.innerHTML = `Peşin ödeme daha avantajlı! <br>Toplam Gerçek Maliyet: ₺${adjustedTotal.toFixed(2)}.<br> Peşin Fiyatı: ₺${cashPrice.toFixed(2)}.`;
+        resultDiv.innerHTML = `Peşin ödeme daha avantajlı! <br>${taksitliReelMaliyet}<br>${pesinReelMaliyet} <br> ${farkHtml}.`;
     }
 }

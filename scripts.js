@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Default inflation rates
-    const defaultYearlyInflation = 61.78; // Example: 120% yearly inflation
-    const defaultMonthlyInflation = 3.23;
+    const defaultYearlyInflation = 49.38;
 
     // Set initial default values in the form
     document.getElementById('inflationRate').value = defaultYearlyInflation;
@@ -55,16 +54,7 @@ function calculate() {
         monthlyInflationRate = 1.0 + monthlyInflationRate;
     }
 
-
-    let adjustedTotal = 0;
-
-    let inflationAdjustment = 1;
-    for (let i = 0; i < numInstallments; i++) {
-        inflationAdjustment *= monthlyInflationRate;
-        adjustedTotal += installmentAmount / inflationAdjustment;
-    }
-
-    adjustedTotal = installmentAmount * (1 - 1 / (Math.pow(monthlyInflationRate, numInstallments))) / (monthlyInflationRate - 1);
+    let adjustedTotal = installmentAmount * (1 - 1 / (Math.pow(monthlyInflationRate, numInstallments))) / (monthlyInflationRate - 1);
 
     const resultDiv = document.getElementById('result');
     let pesinReelMaliyet = `Peşin Reel Maliyet: ₺${cashPrice.toFixed(2)}`;
